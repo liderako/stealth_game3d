@@ -10,15 +10,16 @@ public class EnemyController : MonoBehaviour
 
     [SerializeField]private bool _isPlayerTarget;
     [SerializeField]private GameObject _currentPoint;
-    [SerializeField]private GameObject _player;
+    [SerializeField]private Transform _playerTransform;
 
 
-    [SerializeField]private bool _isLook;
-    [SerializeField]private bool _isPatrol;
-    [SerializeField]private bool _isAttention;
-    private const int layerPlayer = 8;
+    private bool _isLook;
+    private bool _isPatrol;
+    private bool _isAttention;
+    private const int _layerPlayer = 8;
     private const float _speedPatrol = 1.5f;
     private const float _speedHunt = 2.3f;
+    private const float _rangeVision = 20.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -44,23 +45,24 @@ public class EnemyController : MonoBehaviour
     {
         float yStart = -30.0f;
         float step = 5.0f;
-        float distance = 20;
         int amountRay = 13;
         bool tmpLook = false;
-
         RaycastHit hit;
+
         for (int i = 0; i < amountRay; i++)
         {
-            Vector3 dir = Quaternion.Euler(0, yStart, 0) * (_agent.transform.forward * distance);
-            if (Physics.Raycast(transform.position, dir, out hit, distance))
+            Vector3 dir = Quaternion.Euler(0, yStart, 0) * (_agent.transform.forward * _rangeVision);
+            if (Physics.Raycast(transform.position, dir, out hit, _rangeVision))
             {
-                if (hit.transform.gameObject.layer == layerPlayer)
+                if (hit.transform.gameObject.layer == _layerPlayer)
                 {
                     tmpLook = true;
+                    /*
                     Debug.DrawRay(
                         _agent.transform.position,
                         dir,
                         Color.white);
+                    */
                     break;
                 }
             }
@@ -97,7 +99,7 @@ public class EnemyController : MonoBehaviour
         }
         if (!_agent.pathPending && _agent.remainingDistance <= _agent.stoppingDistance)
         {
-            _agent.SetDestination(_player.transform.position);
+            _agent.SetDestination(_playerTransform.position);
         }
     }
 
@@ -116,7 +118,7 @@ public class EnemyController : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.layer == layerPlayer)
+        if (other.gameObject.layer == _layerPlayer)
         {
             LookOnPlayer();
         }
@@ -134,7 +136,7 @@ public class EnemyController : MonoBehaviour
     {
         _isLook = false;
         _isAttention = true;
-        _lastPositionPlayer = _player.transform.position;
+        _lastPositionPlayer = _playerTransform.position;
     }
 
     private void LookOnPlayer()

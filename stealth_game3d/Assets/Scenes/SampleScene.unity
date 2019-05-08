@@ -1845,10 +1845,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isPlayerTarget: 0
   _currentPoint: {fileID: 775130568}
-  _player: {fileID: 476654243}
-  _isLook: 0
-  _isPatrol: 0
-  _isAttention: 0
+  _playerTransform: {fileID: 476654248}
 --- !u!195 &2137567667
 NavMeshAgent:
   m_ObjectHideFlags: 0
