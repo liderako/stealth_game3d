@@ -36,7 +36,7 @@ public class EnemyController : MonoBehaviour
         MoveToLastPositionPlayer();
     }
 
-    private void LateUpdate()
+    void LateUpdate()
     {
        RayCastingEye();
     }
